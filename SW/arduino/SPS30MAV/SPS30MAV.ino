@@ -38,7 +38,8 @@ void setup()
 {
   int16_t ret;
 
-  Serial.begin(57600);
+  Serial.begin(9600);
+  Serial1.begin(57600);
 
   while(!mav.begin())
   {
@@ -139,7 +140,7 @@ void loop()
     // data array (max length 128), data array size, data type (0 default - unknown), target sysid, target compid
     // For unicast (only for logging purposes) set sysid and compid to match the autopilot. For realtime visualisation, you can
     // set sysid and comid to broadcast (0, 0)
-    mav.SendTunnelData(data, sizeof(data), 0, 1, 0);
+    mav.SendTunnelData(data, sizeof(data), 0, 1, 1);
     
     led_status = !led_status;
     digitalWrite(13, led_status);

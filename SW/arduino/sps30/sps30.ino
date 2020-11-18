@@ -1,4 +1,5 @@
 #include <sps30.h>
+#define PLOTTER_FORMAT
 /*
 
                      Mighty 1284p    
