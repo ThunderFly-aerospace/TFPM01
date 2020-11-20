@@ -1,5 +1,4 @@
 #include "ArduinoMavlink.h"
-#include <HardwareSerial.h>
 #include <sps30.h>
 /*
 
@@ -32,7 +31,7 @@ HardwareSerial &hs = Serial1;
 ArduinoMavlink mav(hs);
 
 boolean led_status = false;
-uint8_t data[10];
+uint8_t data[42];
 
 void setup() 
 {
@@ -41,6 +40,7 @@ void setup()
   Serial.begin(9600);
   Serial1.begin(57600);
 
+  delay(250);
   while(!mav.begin())
   {
     Serial.println("Not Connected!");
@@ -87,7 +87,7 @@ void loop()
       Serial.print("data not ready, no new measurement available\n");
     else
       break;
-    delay(100); /* retry in 100ms */
+    delay(100); /* retry in 100 ms */
   } while (1);
 
   ret = sps30_read_measurement(&m);
@@ -96,10 +96,12 @@ void loop()
   } 
   else 
   {
-    uint16_t MC1p0 = round(m.mc_1p0 * 100);
-    uint16_t MC2p5 = round((m.mc_2p5 - m.mc_1p0) * 100);
-    uint16_t MC4p0 = round((m.mc_4p0 - m.mc_2p5) * 100);
-    uint16_t MC10p0 = round((m.mc_10p0 - m.mc_4p0) * 100);
+    Serial.println();
+
+    uint32_t MC1p0 = round(m.mc_1p0 * 100);
+    uint32_t MC2p5 = round((m.mc_2p5 - m.mc_1p0) * 100);
+    uint32_t MC4p0 = round((m.mc_4p0 - m.mc_2p5) * 100);
+    uint32_t MC10p0 = round((m.mc_10p0 - m.mc_4p0) * 100);
 
     Serial.print("PM  0.3 - 1.0: ");
     Serial.println(m.mc_1p0);
@@ -110,12 +112,14 @@ void loop()
     Serial.print("PM 4.0 - 10.0: ");
     Serial.println(m.mc_10p0 - m.mc_4p0);
 
-    uint16_t NC0p5 = round(m.nc_0p5);
-    uint16_t NC1p0 = round(m.nc_1p0 - m.nc_0p5);
-    uint16_t NC2p5 = round(m.nc_2p5 - m.nc_1p0);
-    uint16_t NC4p0 = round(m.nc_4p0 - m.nc_2p5);
-    uint16_t NC10p0 = round(m.nc_10p0 - m.nc_4p0);
+    uint32_t NC0p5 = round(m.nc_0p5 * 100);
+    uint32_t NC1p0 = round((m.nc_1p0 - m.nc_0p5) * 100);
+    uint32_t NC2p5 = round((m.nc_2p5 - m.nc_1p0) * 100);
+    uint32_t NC4p0 = round((m.nc_4p0 - m.nc_2p5) * 100);
+    uint32_t NC10p0 = round((m.nc_10p0 - m.nc_4p0) * 100);
     
+    mav.SendHeartBeat();
+
     Serial.print("NC  0.3 - 0.5:  ");
     Serial.println(m.nc_0p5);
     Serial.print("NC  0.5 - 1.0:  ");
@@ -127,34 +131,53 @@ void loop()
     Serial.print("NC  4.0 - 10.0: ");
     Serial.println(m.nc_10p0 - m.nc_4p0);
 
-    uint16_t TPS = round(m.typical_particle_size * 100);
+    uint32_t TPS = round(m.typical_particle_size * 100);
     
     Serial.print("Typical partical size: ");
     Serial.println(m.typical_particle_size);
-    Serial.println();
   
-    data[0] = lowByte(NC0p5);
-    data[1] = highByte(NC0p5);
-    data[2] = lowByte(NC1p0);
-    data[3] = highByte(NC1p0);
-    data[4] = lowByte(NC2p5);
-    data[5] = highByte(NC2p5);
-    data[6] = lowByte(NC4p0);
-    data[7] = highByte(NC4p0);
-    data[8] = lowByte(NC10p0);
-    data[9] = highByte(NC10p0);
-    data[10] = lowByte(MC1p0);
-    data[11] = highByte(MC1p0);
-    data[12] = lowByte(MC2p5);
-    data[13] = highByte(MC2p5);
-    data[14] = lowByte(MC4p0);
-    data[15] = highByte(MC4p0);
-    data[16] = lowByte(MC10p0);
-    data[17] = highByte(MC10p0);
-    data[18] = lowByte(TPS);
-    data[19] = highByte(TPS);
-
-    mav.SendHeartBeat();
+    data[0] = (NC0p5) & 0xFF;
+    data[1] = (NC0p5 >> 8) & 0xFF;
+    data[2] = (NC0p5 >> 16) & 0xFF;
+    data[3] = (NC0p5 >> 24) & 0xFF;
+    data[4] = (NC1p0) & 0xFF;
+    data[5] = (NC1p0 >> 8) & 0xFF;
+    data[6] = (NC1p0 >> 16) & 0xFF;
+    data[7] = (NC1p0 >> 24) & 0xFF;
+    data[8] = (NC2p5) & 0xFF;
+    data[9] = (NC2p5 >> 8) & 0xFF;
+    data[10] = (NC2p5 >> 16) & 0xFF;
+    data[11] = (NC2p5 >> 24) & 0xFF;
+    data[12] = (NC4p0) & 0xFF;
+    data[13] = (NC4p0 >> 8) & 0xFF;
+    data[14] = (NC4p0 >> 16) & 0xFF;
+    data[15] = (NC4p0 >> 24) & 0xFF;
+    data[16] = (NC10p0) & 0xFF;
+    data[17] = (NC10p0 >> 8) & 0xFF;
+    data[18] = (NC10p0 >> 16) & 0xFF;
+    data[19] = (NC10p0 >> 24) & 0xFF;
+    data[20] = (MC1p0) & 0xFF;
+    data[21] = (MC1p0 >> 8) & 0xFF;
+    data[22] = (MC1p0 >> 16) & 0xFF;
+    data[23] = (MC1p0 >> 24) & 0xFF;
+    data[24] = (MC2p5) & 0xFF;
+    data[25] = (MC2p5 >> 8) & 0xFF;
+    data[26] = (MC2p5 >> 16) & 0xFF;
+    data[27] = (MC2p5 >> 24) & 0xFF;
+    data[28] = (MC4p0) & 0xFF;
+    data[29] = (MC4p0 >> 8) & 0xFF;
+    data[30] = (MC4p0 >> 16) & 0xFF;
+    data[31] = (MC4p0 >> 24) & 0xFF;
+    data[32] = (MC10p0) & 0xFF;
+    data[33] = (MC10p0 >> 8) & 0xFF;
+    data[34] = (MC10p0 >> 16) & 0xFF;
+    data[35] = (MC10p0 >> 24) & 0xFF;
+    data[36] = (TPS) & 0xFF;
+    data[37] = (TPS >> 8) & 0xFF;
+    data[38] = (TPS >> 16) & 0xFF;
+    data[39] = (TPS >> 24) & 0xFF;
+    data[40] = 255;
+    data[41] = 255;
 
     // data array (max length 128), data array size, data type (0 default - unknown), target sysid, target compid
     // For unicast (only for logging purposes) set sysid and compid to match the autopilot. For realtime visualisation, you can

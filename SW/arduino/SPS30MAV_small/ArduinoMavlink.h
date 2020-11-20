@@ -14,7 +14,7 @@
 #include "lib/c_library_v2/mavlink_types.h"
 #include "lib/c_library_v2/protocol.h"
 #include <Arduino.h>
-#include <HardwareSerial.h>
+//#include <HardwareSerial.h>
 
 class ArduinoMavlink
 {
