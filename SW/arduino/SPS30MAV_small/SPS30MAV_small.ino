@@ -30,12 +30,15 @@ TX1/INT1 (D 11) PD3 17|        |24 PC2 (D 18) TCK
 HardwareSerial &hs = Serial1;
 ArduinoMavlink mav(hs);
 
+#define PPS  12     // PD4
 boolean led_status = false;
 uint8_t data[42];
 
 void setup() 
 {
   int16_t ret;
+
+  pinMode(PPS, INPUT);    // sets the digital pin as input
 
   Serial.begin(9600);
   Serial1.begin(57600);
@@ -75,6 +78,8 @@ void loop()
   uint16_t data_ready;
   int16_t ret;
 
+  while(digitalRead(PPS) == false);  // Waiting for 1PPS signal from GPS
+
   do 
   {
     ret = sps30_read_data_ready(&data_ready);
@@ -84,12 +89,14 @@ void loop()
       Serial.println(ret);
     } 
     else if (!data_ready)
+    {
       Serial.print("data not ready, no new measurement available\n");
+      delay(100); /* retry in 100 ms */
+    }
     else
       break;
-    delay(100); /* retry in 100 ms */
   } while (1);
-
+  
   ret = sps30_read_measurement(&m);
   if (ret < 0) {
     Serial.print("error reading measurement\n");
@@ -187,5 +194,5 @@ void loop()
     led_status = !led_status;
     digitalWrite(13, led_status);
   }
-  delay(1000);
+  //delay(100);
 }
