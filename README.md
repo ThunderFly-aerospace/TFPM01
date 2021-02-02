@@ -14,3 +14,6 @@ Připojeného k MCU přes [vodiče SZH-200BK26](https://www.tme.eu/cz/details/sz
 |   3             | SCL   |  D16 / SCL + resistor 10k to Vcc     | Black |
 |   4             | Interface select  Floating - UART, GND I2C.  |  GND     | Black |
 |   5 (outer edge) | GND   |  GND      | Black |
+
+
+GPS PPS signal is connected to pin 12 (PD4), this [could be changed in source code](https://github.com/ThunderFly-aerospace/TFPM01/blob/13cda4ffa5fd143e18c20526534e9ce3898b00ca/SW/arduino/SPS30MAV_small/SPS30MAV_small.ino#L33). 
