@@ -9,8 +9,8 @@ Připojeného k MCU přes [vodiče SZH-200BK26](https://www.tme.eu/cz/details/sz
 
 | SPS30 Pin | Sigal | MCU | Color |
 | ---------------:|:-----:|:-------:|-------|
-|   1             | VDD +5V - Supply voltage |  1      | Red   |
-|   2             | RX Receiving pin for communication / I2C: Serial data |  2      | Black |
-|   3             | SDA   |  3      | Black |
-|   4             | Interface select  Floating - UART, GND I2C.  |  4      | Black |
-|   5             | GND   |  4      | Black |
+|   1             | VDD +5V - Supply voltage |  Vcc      | Red   |
+|   2             | SDA |  D17 / SDA  + resistor 10k to Vcc   | Black |
+|   3             | SCL   |  D16 / SCL + resistor 10k to Vcc     | Black |
+|   4             | Interface select  Floating - UART, GND I2C.  |  GND     | Black |
+|   5 (outer edge) | GND   |  GND      | Black |
