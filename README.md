@@ -8,6 +8,8 @@ The sensor is connected to the MCU ATmega1284P by using [SZH-200BK26 wires](http
 
 
 ![Connection between SPS30 sensor, TFGPS and TFUNIPAYLOAD](doc/img/TFPM01_connection.jpg)
+> Do not reffer immage for pinout. 
+
 
 
 | SPS30 Pin | Sigal | MCU | Color |
