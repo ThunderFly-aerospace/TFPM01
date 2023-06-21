@@ -2,12 +2,14 @@
 
 Particulate matter sensor for [TF-ATMON system](https://www.thunderfly.cz/tf-atmon.html) is based on [Sensirion SPS30](https://sensirion.com/products/catalog/SPS30/).
 
+[ ![Watch the video](https://img.youtube.com/vi/KUhktPDEi8I/hqdefault.jpg) ](https://www.youtube.com/watch?v=KUhktPDEi8I)
+
 ## Connection
 
 The sensor is connected to the [TFUNIPAYLOAD](https://github.com/ThunderFly-aerospace/TFUNIPAYLOAD01) by using [SZH-200BK26 wires](https://www.tme.eu/cz/details/szh-200bk26/signalove-konektory-raster-1-50mm/jst/) and [ZHR-5](https://www.tme.eu/cz/details/zhr-5/signalove-konektory-raster-1-50mm/jst/). For testing the [ATmegaTQ4401A](https://www.mlab.cz/module/ATmegaTQ4401A/) module was used.
-The ATmega runs the Arduino firmware, which prepare [MAVLink](https://en.wikipedia.org/wiki/MAVLink) messages ready to logging and transport to TF-ATMON enabled GCS. 
+The ATmega runs the Arduino firmware, which prepares [MAVLink](https://en.wikipedia.org/wiki/MAVLink) messages ready to log and transport to TF-ATMON enabled GCS. 
 
-Block schematic of that connection reflect following photo:
+The block schematic of that connection reflects the following photo:
 
 ![Connection between SPS30 sensor, TFGPS and TFUNIPAYLOAD](doc/img/TFPM01_connection.jpg)
 > Do not reffer image for pinout. 
