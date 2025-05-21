@@ -8,6 +8,25 @@ Look to the following video for a demonstration flight of a sensor mounted on [T
 
 The design of TFPM01 is obsolete because the particulate matter sensor is now read out directly by PX4 firmware and therefore is replaced by [TFPM02](https://github.com/ThunderFly-aerospace/TFPM02).
 
+
+## Application Example: Airborne Measurement of Fireworks Pollution
+
+A notable application of the TFPM01 sensor was its deployment in an airborne measurement campaign around New Year’s Eve. The goal was to assess the impact of fireworks on atmospheric aerosol concentrations.
+
+Using a TF-ATMON-equipped TF-G2, the experiment demonstrated:
+
+* **Very low particulate levels** during a reference flight before midnight (clean atmospheric conditions).
+* **A sharp increase in PM concentrations** immediately after midnight, due to widespread amateur fireworks.
+* **Sustained pollution levels** the following day, in contrast to the limited local impact of a professional fireworks display.
+
+Such experiments highlight the potential of TFPM01 (and its successor TFPM02) for real-time atmospheric monitoring in vertical profiles.
+
+Further analysis is available in this [Jupyter notebook](https://github.com/ThunderFly-aerospace/TF-ATMON/blob/TF-ATMON01A/notebooks/fireworks_dust.ipynb).
+
+![Wind hodograph colored by altitude during New Year’s Eve flight](doc/img/polar_wind_hodograph.png)
+
+![Measured concentration profiles of airborne particles before and after fireworks](doc/img/Polution_generated_by_fireworks.png)
+
 ## The Connection diagram between SPS30 and TFUNIPAYLOAD
 
 The sensor is connected to the [TFUNIPAYLOAD](https://github.com/ThunderFly-aerospace/TFUNIPAYLOAD01) by using [SZH-200BK26 wires](https://www.tme.eu/cz/details/szh-200bk26/signalove-konektory-raster-1-50mm/jst/) and [ZHR-5](https://www.tme.eu/cz/details/zhr-5/signalove-konektory-raster-1-50mm/jst/). For testing and development of TFUNIPAYLOAD firmware, the [ATmegaTQ4401A](https://www.mlab.cz/module/ATmegaTQ4401A/) module was used as shown in the diagram.
